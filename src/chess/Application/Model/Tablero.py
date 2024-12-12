@@ -11,8 +11,8 @@ class Tablero:
         # Crear una casilla como un Frame
         casilla = tk.Frame(
             self.tablero_frame,
-            width=50,
-            height=50,
+            width=60,
+            height=60,
             bg=color
         )
         casilla.grid(row=fila, column=columna)
