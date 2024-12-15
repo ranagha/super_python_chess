@@ -5,7 +5,8 @@ class Tablero:
         # Guardamos la ventana principal
         self.ventana = ventana
         self.tablero_frame = tk.Frame(self.ventana)
-        self.tablero_frame.pack()
+        self.tablero_frame.pack(pady=50)
+
 
     def agregar_casilla(self, fila, columna, color):
         # Crear una casilla como un Frame
