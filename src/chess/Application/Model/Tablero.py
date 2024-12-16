@@ -6,6 +6,7 @@ class Tablero:
         self.ventana = ventana
         self.tablero_frame = tk.Frame(self.ventana)
         self.tablero_frame.pack(pady=50)
+        self.casillas = [[None for _ in range(8)] for _ in range(8)]
 
 
     def agregar_casilla(self, fila, columna, color):
@@ -17,3 +18,10 @@ class Tablero:
             bg=color
         )
         casilla.grid(row=fila, column=columna)
+        self.casillas[fila][columna] = casilla
+
+    def colocar_pieza(self, fila, columna, imagen_path):
+        pieza_imagen = tk.PhotoImage(file=imagen_path)
+        pieza = tk.Label(self.tablero_frame, image=pieza_imagen)
+        pieza.image = pieza_imagen  # Necesario para evitar que se elimine la referencia
+        pieza.grid(row=fila, column=columna)

@@ -4,6 +4,7 @@ from src.chess.Application.Model.Tablero import Tablero
 def crear_tablero(tablero):
     color = 'black'
     first_color = 'black'
+    tablero.colocar_pieza(0, 0, '../../img/1.png')
     for i in range(0, 8):
         if first_color == 'white':
             first_color = 'black'
