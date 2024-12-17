@@ -2,18 +2,18 @@ import tkinter as tk
 from src.chess.Application.Model.Tablero import Tablero
 
 def crear_tablero(tablero):
-    color = 'black'
-    first_color = 'black'
+    color = 'green'
+    first_color = 'green'
     for i in range(0, 8):
         if first_color == 'white':
-            first_color = 'black'
+            first_color = 'green'
         else:
             first_color = 'white'
         for j in range(0, 8):
             color = first_color if j == 0 else color
             tablero.agregar_casilla(i, j, color)
             if color == 'white':
-                color = 'black'
+                color = 'green'
             else:
                 color = 'white'
     colocar_piezas_salida(tablero)
