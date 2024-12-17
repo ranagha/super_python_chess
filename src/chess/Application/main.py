@@ -4,7 +4,6 @@ from src.chess.Application.Model.Tablero import Tablero
 def crear_tablero(tablero):
     color = 'black'
     first_color = 'black'
-    tablero.colocar_pieza(0, 0, '../../img/1.png')
     for i in range(0, 8):
         if first_color == 'white':
             first_color = 'black'
@@ -17,6 +16,41 @@ def crear_tablero(tablero):
                 color = 'black'
             else:
                 color = 'white'
+    tablero.colocar_pieza(0, 0, '../../img/black_rock.png')
+    tablero.colocar_pieza(0, 1, '../../img/black_knight.png')
+    tablero.colocar_pieza(0, 2, '../../img/black_bishop.png')
+    tablero.colocar_pieza(0, 3, '../../img/black_king.png')
+    tablero.colocar_pieza(0, 4, '../../img/black_queen.png')
+    tablero.colocar_pieza(0, 5, '../../img/black_bishop.png')
+    tablero.colocar_pieza(0, 6, '../../img/black_knight.png')
+    tablero.colocar_pieza(0, 7, '../../img/black_rock.png')
+
+    tablero.colocar_pieza(1, 0, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 1, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 2, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 3, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 4, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 5, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 6, '../../img/black_pawn.png')
+    tablero.colocar_pieza(1, 7, '../../img/black_pawn.png')
+
+    tablero.colocar_pieza(7, 0, '../../img/white_rock.png')
+    tablero.colocar_pieza(7, 1, '../../img/white_knight.png')
+    tablero.colocar_pieza(7, 2, '../../img/white_bishop.png')
+    tablero.colocar_pieza(7, 3, '../../img/white_king.png')
+    tablero.colocar_pieza(7, 4, '../../img/white_queen.png')
+    tablero.colocar_pieza(7, 5, '../../img/white_bishop.png')
+    tablero.colocar_pieza(7, 6, '../../img/white_knight.png')
+    tablero.colocar_pieza(7, 7, '../../img/white_rock.png')
+
+    tablero.colocar_pieza(6, 0, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 1, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 2, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 3, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 4, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 5, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 6, '../../img/white_pawn.png')
+    tablero.colocar_pieza(6, 7, '../../img/white_pawn.png')
 
 def crear_nombres(root):
     etiqueta_jugador = tk.Label(root, text="Jugador", font=("Arial", 12))

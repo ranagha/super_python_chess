@@ -22,6 +22,7 @@ class Tablero:
 
     def colocar_pieza(self, fila, columna, imagen_path):
         pieza_imagen = tk.PhotoImage(file=imagen_path)
+        pieza_imagen = pieza_imagen.subsample(16, 16)
         pieza = tk.Label(self.tablero_frame, image=pieza_imagen)
         pieza.image = pieza_imagen  # Necesario para evitar que se elimine la referencia
         pieza.grid(row=fila, column=columna)
