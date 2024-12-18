@@ -1,4 +1,14 @@
 import tkinter as tk
+from PIL import Image, ImageTk
+
+
+def obtener_color_casilla(fila, columna):
+    # Alterna entre 'beige' y 'saddlebrown' según las coordenadas
+    if (fila + columna) % 2 == 0:
+        return "beige"  # Casilla blanca
+    else:
+        return "saddlebrown"  # Casilla negra
+
 
 class Tablero:
     def __init__(self, ventana):
@@ -22,9 +32,16 @@ class Tablero:
         self.casillas[fila][columna] = casilla
 
     def colocar_pieza(self, fila, columna, pieza, color, imagen_path):
-        pieza_imagen = tk.PhotoImage(file=imagen_path)
-        pieza_imagen = pieza_imagen.subsample(16, 16)
-        pieza = tk.Label(self.tablero_frame, image=pieza_imagen)
-        pieza.image = pieza_imagen  # Necesario para evitar que se elimine la referencia
+        pieza_imagen = Image.open(imagen_path).convert("RGBA")
+        color_casilla = obtener_color_casilla(fila, columna)
+        # Redimensionar la imagen (si es necesario)
+        pieza_imagen = pieza_imagen.resize((50, 50))  # Ajusta el tamaño según necesites
+
+        # Convertir la imagen a un formato que Tkinter puede manejar
+        pieza_imagen_tk = ImageTk.PhotoImage(pieza_imagen)
+
+        pieza = tk.Label(self.tablero_frame, image=pieza_imagen_tk, bg=color_casilla)
+        pieza.image = pieza_imagen_tk  # Necesario para mantener la referencia
         pieza.grid(row=fila, column=columna)
         self.piezas[fila][columna] = {pieza: pieza, color: color}
+
