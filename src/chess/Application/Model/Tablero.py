@@ -31,17 +31,32 @@ class Tablero:
         casilla.grid(row=fila, column=columna)
         self.casillas[fila][columna] = casilla
 
-    def colocar_pieza(self, fila, columna, pieza, color, imagen_path):
+    def colocar_pieza(self, fila, columna, pieza, color):
+        imagen_path = '../../img/' + color + '_' + pieza + '.png'
         pieza_imagen = Image.open(imagen_path).convert("RGBA")
         color_casilla = obtener_color_casilla(fila, columna)
         # Redimensionar la imagen (si es necesario)
         pieza_imagen = pieza_imagen.resize((50, 50))  # Ajusta el tamaño según necesites
-
         # Convertir la imagen a un formato que Tkinter puede manejar
         pieza_imagen_tk = ImageTk.PhotoImage(pieza_imagen)
-
         pieza = tk.Label(self.tablero_frame, image=pieza_imagen_tk, bg=color_casilla)
         pieza.image = pieza_imagen_tk  # Necesario para mantener la referencia
         pieza.grid(row=fila, column=columna)
-        self.piezas[fila][columna] = {pieza: pieza, color: color}
+        self.piezas[fila][columna] = {'pieza': pieza, 'color': color}
 
+    def quitar_pieza(self, fila, columna):
+        self.piezas[6][5] = None
+        casilla = tk.Frame(
+            self.tablero_frame,
+            width=60,
+            height=60,
+            bg='saddlebrown'
+        )
+        casilla.grid(row=fila, column=columna)
+        self.casillas[fila][columna] = casilla
+
+
+    def move(self, event):
+        self.piezas[5][5] = {'pieza': 'pawn', 'color': 'black'}
+        self.colocar_pieza(5,5, 'pawn', 'white')
+        self.quitar_pieza(6, 5)
