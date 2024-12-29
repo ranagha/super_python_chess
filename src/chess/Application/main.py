@@ -9,14 +9,9 @@ def crear_tablero(tablero):
     colocar_piezas_salida(tablero)
 
 def colocar_piezas_principales(tablero, color, posicion_inicial):
-    tablero.colocar_pieza(posicion_inicial, 0, 'rock', color)
-    tablero.colocar_pieza(posicion_inicial, 1, 'knight', color)
-    tablero.colocar_pieza(posicion_inicial, 2, 'bishop', color)
-    tablero.colocar_pieza(posicion_inicial, 3, 'queen', color)
-    tablero.colocar_pieza(posicion_inicial, 4, 'king', color)
-    tablero.colocar_pieza(posicion_inicial, 5, 'bishop', color)
-    tablero.colocar_pieza(posicion_inicial, 6, 'knight', color)
-    tablero.colocar_pieza(posicion_inicial, 7, 'rock', color)
+    orden_piezas = ['rock', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rock']
+    for i in range(0, 8):
+        tablero.colocar_pieza(posicion_inicial, i, orden_piezas[i], color)
 
 def colocar_peones(tablero, color, posicion_inicial):
     for i in range(0, 8):
@@ -44,5 +39,4 @@ def start():
     tablero = Tablero(root)
     crear_tablero(tablero)
     crear_nombres(root)
-    root.bind('<Button-1>', tablero.move)
     root.mainloop()
