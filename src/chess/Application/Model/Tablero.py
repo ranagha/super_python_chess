@@ -65,15 +65,19 @@ class Tablero:
 
 
     def selecciona_pieza(self, event, fila, columna):
-        self.seleccionado = True
-        casilla = tk.Frame(
-            self.tablero_frame,
-            width=60,
-            height=60,
-            bg='orange'
-        )
-        casilla.grid(row=fila, column=columna)
-        self.casillas[fila][columna] = casilla
+        print(self.piezas[fila][columna])
+        if self.piezas[fila][columna] is not None:
+            self.seleccionado = True
+            casilla = tk.Frame(
+                self.tablero_frame,
+                width=60,
+                height=60,
+                bg='orange'
+            )
+            casilla.grid(row=fila, column=columna)
+            self.casillas[fila][columna] = casilla
+            self.colocar_pieza(fila, columna, 'pawn', 'white')
+            print(self.piezas[fila][columna])
 
     def mueve_pieza(self, event, fila, columna):
         self.piezas[5][5] = {'pieza': 'pawn', 'color': 'black'}
