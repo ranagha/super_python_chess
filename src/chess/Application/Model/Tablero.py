@@ -97,8 +97,7 @@ class Tablero:
             )
             casilla.grid(row=fila, column=columna)
             self.casillas[fila][columna] = casilla
-            print(self.piezas[fila][columna])
-            self.colocar_pieza(fila, columna, type(self.piezas[fila][columna]).__name__.lower(), self.obtener_color(self.piezas[fila][columna]))
+            self.colocar_pieza(fila, columna, self.piezas[fila][columna]['pieza'], self.piezas[fila][columna]['color'])
 
     def obtener_color(self, pieza):
         print(pieza)
