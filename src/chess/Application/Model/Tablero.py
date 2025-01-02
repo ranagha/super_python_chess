@@ -7,7 +7,7 @@ from src.chess.Application.Model.King import King
 from src.chess.Application.Model.Queen import Queen
 from src.chess.Application.Model.Pawn import Pawn
 
-def crear_pieza(tipo: str, color: str):
+def crear_pieza(tipo: str, color: str, fila, columna):
     piezas = {
         "pawn": Pawn,
         'king': King,
@@ -18,7 +18,7 @@ def crear_pieza(tipo: str, color: str):
     }
     # Verificamos si el tipo está en el diccionario
     if tipo in piezas:
-        return piezas[tipo](color)
+        return piezas[tipo](color, fila, columna)
     else:
         raise ValueError(f"La pieza {tipo} no existe")
 
@@ -65,7 +65,7 @@ class Tablero:
         pieza_fisica = tk.Label(self.tablero_frame, image=pieza_imagen_tk, bg=color_casilla)
         pieza_fisica.image = pieza_imagen_tk  # Necesario para mantener la referencia
         pieza_fisica.grid(row=fila, column=columna)
-        self.piezas[fila][columna] = crear_pieza(pieza, color)
+        self.piezas[fila][columna] = crear_pieza(pieza, color, fila, columna)
         pieza_fisica.bind("<Button-1>", lambda event: self.move(event, fila, columna))
 
     def quitar_pieza(self, fila, columna):
@@ -97,13 +97,24 @@ class Tablero:
             )
             casilla.grid(row=fila, column=columna)
             self.casillas[fila][columna] = casilla
-            self.colocar_pieza(fila, columna, self.piezas[fila][columna]['pieza'], self.piezas[fila][columna]['color'])
+            selected_pieza = self.piezas[fila][columna]
+            self.colocar_pieza(fila, columna, selected_pieza['pieza'], selected_pieza['color'])
+            posibles_moves = selected_pieza['possibles_moves']
+            for filai, columnai in posibles_moves:
+                casilla = tk.Frame(
+                    self.tablero_frame,
+                    width=60,
+                    height=60,
+                    bg='lightgray'
+                )
+                casilla.grid(row=filai, column=columnai)
+                self.casillas[filai][columnai] = casilla
 
     def obtener_color(self, pieza):
         print(pieza)
         return pieza.color()
 
     def mueve_pieza(self, event, fila, columna):
-        self.piezas[5][5] = {'pieza': 'pawn', 'color': 'black'}
-        self.colocar_pieza(5,5, 'pawn', 'white')
-        self.quitar_pieza(6, 5)
+        self.piezas[5][3] = {'pieza': 'pawn', 'color': 'black'}
+        self.colocar_pieza(5,3, 'pawn', 'white')
+        self.quitar_pieza(6, 3)
