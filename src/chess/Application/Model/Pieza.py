@@ -2,7 +2,7 @@ import json
 from abc import ABC, abstractmethod
 
 class Pieza(ABC):
-    def __init__(self, color, fila, columna):
+    def __init__(self, color: str, fila: int, columna: int):
         self._color = color
         self._fila = fila
         self._columna = columna
