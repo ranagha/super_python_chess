@@ -34,6 +34,7 @@ def obtener_color_casilla(fila, columna):
 class Tablero:
     def __init__(self, ventana):
         # Guardamos la ventana principal
+        self.posibles_moves = []
         self.ventana = ventana
         self.tablero_frame = tk.Frame(self.ventana)
         self.tablero_frame.pack(pady=50)
@@ -99,8 +100,8 @@ class Tablero:
             self.casillas[fila][columna] = casilla
             selected_pieza = self.piezas[fila][columna]
             self.colocar_pieza(fila, columna, selected_pieza['pieza'], selected_pieza['color'])
-            posibles_moves = selected_pieza['possibles_moves']
-            for filai, columnai in posibles_moves:
+            self.posibles_moves = selected_pieza['possibles_moves']
+            for filai, columnai in self.posibles_moves:
                 casilla = tk.Frame(
                     self.tablero_frame,
                     width=60,
@@ -108,13 +109,15 @@ class Tablero:
                     bg='lightgray'
                 )
                 casilla.grid(row=filai, column=columnai)
+                casilla.bind("<Button-1>", lambda event: self.move(event, filai, columnai))
                 self.casillas[filai][columnai] = casilla
 
-    def obtener_color(self, pieza):
-        print(pieza)
-        return pieza.color()
-
     def mueve_pieza(self, event, fila, columna):
-        self.piezas[5][3] = {'pieza': 'pawn', 'color': 'black'}
-        self.colocar_pieza(5,3, 'pawn', 'white')
-        self.quitar_pieza(6, 3)
+        print (self.posibles_moves)
+        print(fila, columna)
+        for filai, columnai in self.posibles_moves:
+            if filai == fila and columnai == columna:
+                self.seleccionado = False
+                self.piezas[5][3] = {'pieza': 'pawn', 'color': 'black'}
+                self.colocar_pieza(5,3, 'pawn', 'white')
+                self.quitar_pieza(6, 3)

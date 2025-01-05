@@ -5,4 +5,4 @@ class King(Pieza):
         super().__init__(color, fila, columna)
 
     def possible_moves(self):
-        pass
+        return []
