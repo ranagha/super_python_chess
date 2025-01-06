@@ -11,4 +11,9 @@ class Pawn(Pieza):
             if self.fila() == 1 and self.color() == 'black':
                 return [(2, self.columna()), (3, self.columna())]
             else:
-                return [(self.fila()+1, self.columna())]
+                if self.color() == 'white' and self.fila()-1 >= 0:
+                    return [(self.fila()-1, self.columna())]
+                if self.color() == 'black' and self.fila()+1 <= 7:
+                    return [(self.fila()+1, self.columna())]
+                else:
+                    return []

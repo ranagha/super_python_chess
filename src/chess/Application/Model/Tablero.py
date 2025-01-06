@@ -41,6 +41,9 @@ class Tablero:
         self.casillas = [[None for _ in range(8)] for _ in range(8)]
         self.piezas = [[None for _ in range(8)] for _ in range(8)]
         self.seleccionado = False
+        self.selected_pieza = None
+        self.selected_origen_fila = None
+        self.selected_origen_columna = None
 
 
     def agregar_casilla(self, fila, columna, color):
@@ -90,6 +93,8 @@ class Tablero:
     def selecciona_pieza(self, event, fila, columna):
         if self.piezas[fila][columna] is not None:
             self.seleccionado = True
+            self.selected_origen_fila = fila
+            self.selected_origen_columna = columna
             casilla = tk.Frame(
                 self.tablero_frame,
                 width=60,
@@ -98,9 +103,9 @@ class Tablero:
             )
             casilla.grid(row=fila, column=columna)
             self.casillas[fila][columna] = casilla
-            selected_pieza = self.piezas[fila][columna]
-            self.colocar_pieza(fila, columna, selected_pieza['pieza'], selected_pieza['color'])
-            self.posibles_moves = selected_pieza['possibles_moves']
+            self.selected_pieza = self.piezas[fila][columna]
+            self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
+            self.posibles_moves = self.selected_pieza['possibles_moves']
             for filai, columnai in self.posibles_moves:
                 casilla = tk.Frame(
                     self.tablero_frame,
@@ -113,11 +118,14 @@ class Tablero:
                 self.casillas[filai][columnai] = casilla
 
     def mueve_pieza(self, event, fila, columna):
-        print (self.posibles_moves)
-        print(fila, columna)
         for filai, columnai in self.posibles_moves:
             if filai == fila and columnai == columna:
+                print(filai, columnai, fila, columna)
                 self.seleccionado = False
-                self.piezas[5][3] = {'pieza': 'pawn', 'color': 'black'}
-                self.colocar_pieza(5,3, 'pawn', 'white')
-                self.quitar_pieza(6, 3)
+                self.piezas[fila][columna] = {'pieza': self.selected_pieza['pieza'], 'color': self.selected_pieza['color']}
+                self.piezas[self.selected_origen_fila][self.selected_origen_columna] = None
+                self.quitar_pieza(self.selected_origen_fila, self.selected_origen_columna)
+                self.agregar_casilla(self.selected_origen_fila, self.selected_origen_columna, obtener_color_casilla(self.selected_origen_fila, self.selected_origen_columna))
+                for filaj, columnaj in self.posibles_moves:
+                    self.agregar_casilla(filaj, columnaj, obtener_color_casilla(filaj, columnaj))
+                self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
