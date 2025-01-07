@@ -114,11 +114,12 @@ class Tablero:
                     bg='lightgray'
                 )
                 casilla.grid(row=filai, column=columnai)
-                casilla.bind("<Button-1>", lambda event: self.move(event, filai, columnai))
+                casilla.bind("<Button-1>", lambda new_event: self.move(new_event, filai, columnai))
                 self.casillas[filai][columnai] = casilla
 
     def mueve_pieza(self, event, fila, columna):
         for filai, columnai in self.posibles_moves:
+            print(filai, columnai, fila, columna)
             if filai == fila and columnai == columna:
                 print(filai, columnai, fila, columna)
                 self.seleccionado = False
