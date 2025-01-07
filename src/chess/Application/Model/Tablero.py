@@ -106,6 +106,7 @@ class Tablero:
             self.selected_pieza = self.piezas[fila][columna]
             self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
             self.posibles_moves = self.selected_pieza['possibles_moves']
+            self.calculate_colision()
             for filai, columnai in self.posibles_moves:
                 casilla = tk.Frame(
                     self.tablero_frame,
@@ -114,19 +115,41 @@ class Tablero:
                     bg='lightgray'
                 )
                 casilla.grid(row=filai, column=columnai)
-                casilla.bind("<Button-1>", lambda new_event: self.move(new_event, filai, columnai))
+                casilla.bind("<Button-1>", lambda new_event, fi=filai, co=columnai: self.move(new_event, fi, co))
                 self.casillas[filai][columnai] = casilla
+                if self.piezas[filai][columnai] is not None:
+                    self.colocar_pieza(filai, columnai, self.piezas[filai][columnai]['pieza'], self.piezas[filai][columnai]['color'])
 
     def mueve_pieza(self, event, fila, columna):
+        if fila == self.selected_origen_fila and columna == self.selected_origen_columna:
+            self.seleccionado = False
+            self.agregar_casilla(self.selected_origen_fila, self.selected_origen_columna,
+                                 obtener_color_casilla(self.selected_origen_fila, self.selected_origen_columna))
+            self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
+            for filaj, columnaj in self.posibles_moves:
+                self.agregar_casilla(filaj, columnaj, obtener_color_casilla(filaj, columnaj))
+                if self.piezas[filaj][columnaj] is not None:
+                    self.colocar_pieza(filaj, columnaj, self.piezas[filaj][columnaj]['pieza'], self.piezas[filaj][columnaj]['color'])
+        else:
+            for filai, columnai in self.posibles_moves:
+                if filai == fila and columnai == columna:
+                    print(filai, columnai, fila, columna)
+                    self.seleccionado = False
+                    self.piezas[fila][columna] = {'pieza': self.selected_pieza['pieza'], 'color': self.selected_pieza['color']}
+                    self.piezas[self.selected_origen_fila][self.selected_origen_columna] = None
+                    self.quitar_pieza(self.selected_origen_fila, self.selected_origen_columna)
+                    self.agregar_casilla(self.selected_origen_fila, self.selected_origen_columna, obtener_color_casilla(self.selected_origen_fila, self.selected_origen_columna))
+                    for filaj, columnaj in self.posibles_moves:
+                        self.agregar_casilla(filaj, columnaj, obtener_color_casilla(filaj, columnaj))
+                        if self.piezas[filaj][columnaj] is not None:
+                            self.colocar_pieza(filaj, columnaj, self.piezas[filaj][columnaj]['pieza'],
+                                               self.piezas[filaj][columnaj]['color'])
+                    self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
+
+
+    def calculate_colision(self):
+        temporal_moves = []
         for filai, columnai in self.posibles_moves:
-            print(filai, columnai, fila, columna)
-            if filai == fila and columnai == columna:
-                print(filai, columnai, fila, columna)
-                self.seleccionado = False
-                self.piezas[fila][columna] = {'pieza': self.selected_pieza['pieza'], 'color': self.selected_pieza['color']}
-                self.piezas[self.selected_origen_fila][self.selected_origen_columna] = None
-                self.quitar_pieza(self.selected_origen_fila, self.selected_origen_columna)
-                self.agregar_casilla(self.selected_origen_fila, self.selected_origen_columna, obtener_color_casilla(self.selected_origen_fila, self.selected_origen_columna))
-                for filaj, columnaj in self.posibles_moves:
-                    self.agregar_casilla(filaj, columnaj, obtener_color_casilla(filaj, columnaj))
-                self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
+            if self.piezas[filai][columnai] is None or self.selected_pieza['color'] != self.piezas[filai][columnai]['color']:
+                temporal_moves.append((filai, columnai))
+        self.posibles_moves = temporal_moves
