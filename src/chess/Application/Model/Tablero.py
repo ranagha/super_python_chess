@@ -149,12 +149,22 @@ class Tablero:
 
     def calculate_colision(self):
         temporal_moves = []
+        collision_detected = False
         for filai, columnai in self.posibles_moves:
-            if self.piezas[filai][columnai] is None or (self.selected_pieza['color'] != self.piezas[filai][columnai]['color'] and self.selected_pieza['pieza'] != 'pawn'):
+            if not collision_detected and (self.piezas[filai][columnai] is None or (self.selected_pieza['color'] != self.piezas[filai][columnai]['color'] and self.selected_pieza['pieza'] != 'pawn')):
                 temporal_moves.append((filai, columnai))
+            else:
+                collision_detected = True
         if self.selected_pieza['pieza'] == 'pawn' and self.selected_pieza['color'] == 'black':
-            if self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1] is not None:
+            if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1] is not None:
                 temporal_moves.append((self.selected_origen_fila+1, self.selected_origen_columna+1))
-            if self.piezas[self.selected_origen_fila + 1][self.selected_origen_columna - 1] is not None:
+            if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna - 1 >= 0 and self.piezas[self.selected_origen_fila + 1][self.selected_origen_columna - 1] is not None:
                 temporal_moves.append((self.selected_origen_fila + 1, self.selected_origen_columna - 1))
+
+        if self.selected_pieza['pieza'] == 'pawn' and self.selected_pieza['color'] == 'white':
+            if self.selected_origen_fila-1 >= 0 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila-1][self.selected_origen_columna+1] is not None:
+                temporal_moves.append((self.selected_origen_fila-1, self.selected_origen_columna+1))
+            if self.selected_origen_fila-1 >= 0 and self.selected_origen_columna - 1 >= 0 and self.piezas[self.selected_origen_fila -1][self.selected_origen_columna - 1] is not None:
+                temporal_moves.append((self.selected_origen_fila -1, self.selected_origen_columna - 1))
+
         self.posibles_moves = temporal_moves
