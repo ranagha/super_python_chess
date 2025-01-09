@@ -1,5 +1,3 @@
-from idlelib.outwin import file_line_pats
-
 from src.chess.Application.Model.Pieza import Pieza
 
 class Bishop(Pieza):

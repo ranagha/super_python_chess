@@ -44,6 +44,7 @@ class Tablero:
         self.selected_pieza = None
         self.selected_origen_fila = None
         self.selected_origen_columna = None
+        self.collisions = []
 
 
     def agregar_casilla(self, fila, columna, color):
@@ -92,6 +93,7 @@ class Tablero:
 
     def selecciona_pieza(self, event, fila, columna):
         if self.piezas[fila][columna] is not None:
+            self.collisions = []
             self.seleccionado = True
             self.selected_origen_fila = fila
             self.selected_origen_columna = columna
@@ -133,7 +135,6 @@ class Tablero:
         else:
             for filai, columnai in self.posibles_moves:
                 if filai == fila and columnai == columna:
-                    print(filai, columnai, fila, columna)
                     self.seleccionado = False
                     self.piezas[fila][columna] = {'pieza': self.selected_pieza['pieza'], 'color': self.selected_pieza['color']}
                     self.piezas[self.selected_origen_fila][self.selected_origen_columna] = None
@@ -147,14 +148,32 @@ class Tablero:
                     self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
 
 
+    def casilla_vacia(self, fila, columna):
+        return self.piezas[fila][columna] is None
+
+    def casilla_enemiga_encontrada(self, fila, columna):
+        return self.selected_pieza['color'] != self.piezas[fila][columna]['color'] and self.selected_pieza['pieza'] != 'pawn'
+
+    def casilla_amiga_encontrada(self, fila, columna):
+        return self.selected_pieza['color'] == self.piezas[fila][columna]['color']
+
+    def en_linea(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
+        return False
+
+    def detras_de_colision(self, fila, columna):
+        for filai, columnai in self.collisions:
+            return self.en_linea(self.selected_origen_fila, self.selected_origen_columna, filai, columnai, fila, columna)
+
     def calculate_colision(self):
         temporal_moves = []
-        collision_detected = False
         for filai, columnai in self.posibles_moves:
-            if not collision_detected and (self.piezas[filai][columnai] is None or (self.selected_pieza['color'] != self.piezas[filai][columnai]['color'] and self.selected_pieza['pieza'] != 'pawn')):
+            if self.casilla_vacia(filai, columnai) or self.casilla_enemiga_encontrada(filai, columnai):
                 temporal_moves.append((filai, columnai))
-            else:
-                collision_detected = True
+            if self.casilla_enemiga_encontrada(filai, columnai):
+                self.collisions.append((filai, columnai))
+            if self.casilla_amiga_encontrada(filai, columnai):
+                self.collisions.append((filai, columnai))
+
         if self.selected_pieza['pieza'] == 'pawn' and self.selected_pieza['color'] == 'black':
             if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1] is not None:
                 temporal_moves.append((self.selected_origen_fila+1, self.selected_origen_columna+1))
@@ -168,3 +187,4 @@ class Tablero:
                 temporal_moves.append((self.selected_origen_fila -1, self.selected_origen_columna - 1))
 
         self.posibles_moves = temporal_moves
+
