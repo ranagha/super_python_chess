@@ -152,9 +152,13 @@ class Tablero:
         return self.piezas[fila][columna] is None
 
     def casilla_enemiga_encontrada(self, fila, columna):
+        if self.piezas[fila][columna] is None:
+            return False
         return self.selected_pieza['color'] != self.piezas[fila][columna]['color'] and self.selected_pieza['pieza'] != 'pawn'
 
     def casilla_amiga_encontrada(self, fila, columna):
+        if self.piezas[fila][columna] is None:
+            return False
         return self.selected_pieza['color'] == self.piezas[fila][columna]['color']
 
     def en_linea(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
