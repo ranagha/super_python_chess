@@ -162,7 +162,22 @@ class Tablero:
         return self.selected_pieza['color'] == self.piezas[fila][columna]['color']
 
     def en_linea(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
+        return (self.en_linea_horizontal(origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna) or
+        self.en_linea_vertical(origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna) or
+        self.en_linea_diagonal(origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna))
+
+    def en_linea_horizontal(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
+        if origen_fila == intermedio_fila and intermedio_fila == final_fila:
+            return min(origen_columna, final_columna) < intermedio_columna < max(origen_columna, final_columna)
         return False
+
+    def en_linea_vertical(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
+        if origen_columna == intermedio_columna and intermedio_columna == final_columna:
+            return min(origen_fila, final_fila) < intermedio_fila < max(origen_fila, final_fila)
+        return False
+
+    def en_linea_diagonal(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
+        return True
 
     def detras_de_colision(self, fila, columna):
         for filai, columnai in self.collisions:
