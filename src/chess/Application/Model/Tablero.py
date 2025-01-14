@@ -177,7 +177,7 @@ class Tablero:
         return False
 
     def en_linea_diagonal(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
-        return True
+        return abs(origen_fila - intermedio_fila) == abs(intermedio_fila - final_fila) and abs(origen_columna - intermedio_columna) == abs(intermedio_columna - final_columna)
 
     def detras_de_colision(self, fila, columna):
         for filai, columnai in self.collisions:
@@ -186,12 +186,14 @@ class Tablero:
     def calculate_colision(self):
         temporal_moves = []
         for filai, columnai in self.posibles_moves:
-            if self.casilla_vacia(filai, columnai) or self.casilla_enemiga_encontrada(filai, columnai):
-                temporal_moves.append((filai, columnai))
             if self.casilla_enemiga_encontrada(filai, columnai):
                 self.collisions.append((filai, columnai))
             if self.casilla_amiga_encontrada(filai, columnai):
                 self.collisions.append((filai, columnai))
+        for filai, columnai in self.posibles_moves:
+            if not self.detras_de_colision(filai, columnai) and (
+                    self.casilla_vacia(filai, columnai) or self.casilla_enemiga_encontrada(filai, columnai)):
+                temporal_moves.append((filai, columnai))
 
         if self.selected_pieza['pieza'] == 'pawn' and self.selected_pieza['color'] == 'black':
             if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1] is not None:
