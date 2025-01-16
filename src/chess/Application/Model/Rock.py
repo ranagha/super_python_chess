@@ -29,5 +29,5 @@ class Rock(Pieza):
         columnai = self.columna()
         while columnai > 0:
             columnai = columnai - 1
-            movements.append((self.columna(), columnai))
+            movements.append((self.fila(), columnai))
         return movements
