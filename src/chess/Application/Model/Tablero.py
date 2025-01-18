@@ -177,11 +177,16 @@ class Tablero:
         return False
 
     def en_linea_diagonal(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
-        return abs(origen_fila - intermedio_fila) == abs(intermedio_fila - final_fila) and abs(origen_columna - intermedio_columna) == abs(intermedio_columna - final_columna)
+        if intermedio_fila == 6 and intermedio_columna == 2 and final_fila == 4 and final_columna == 0:
+            print(abs(origen_fila - intermedio_fila), abs(intermedio_fila - final_fila), abs(origen_columna - intermedio_columna), abs(intermedio_columna - final_columna))
+        return abs(origen_fila - intermedio_fila) == abs(origen_columna - intermedio_columna) and abs(intermedio_fila - final_fila)  == abs(intermedio_columna - final_columna)
 
     def detras_de_colision(self, fila, columna):
+        detras = False
         for filai, columnai in self.collisions:
-            return self.en_linea(self.selected_origen_fila, self.selected_origen_columna, filai, columnai, fila, columna)
+            if self.en_linea(self.selected_origen_fila, self.selected_origen_columna, filai, columnai, fila, columna):
+                detras = True
+        return detras
 
     def calculate_colision(self):
         temporal_moves = []
@@ -196,15 +201,15 @@ class Tablero:
                 temporal_moves.append((filai, columnai))
 
         if self.selected_pieza['pieza'] == 'pawn' and self.selected_pieza['color'] == 'black':
-            if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1] is not None:
+            if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1] is not None and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna+1]['color'] == 'white':
                 temporal_moves.append((self.selected_origen_fila+1, self.selected_origen_columna+1))
-            if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna - 1 >= 0 and self.piezas[self.selected_origen_fila + 1][self.selected_origen_columna - 1] is not None:
+            if self.selected_origen_fila+1 <= 7 and self.selected_origen_columna - 1 >= 0 and self.piezas[self.selected_origen_fila + 1][self.selected_origen_columna - 1] is not None and self.piezas[self.selected_origen_fila+1][self.selected_origen_columna-1]['color'] == 'white':
                 temporal_moves.append((self.selected_origen_fila + 1, self.selected_origen_columna - 1))
 
         if self.selected_pieza['pieza'] == 'pawn' and self.selected_pieza['color'] == 'white':
-            if self.selected_origen_fila-1 >= 0 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila-1][self.selected_origen_columna+1] is not None:
+            if self.selected_origen_fila-1 >= 0 and self.selected_origen_columna+1 <= 7 and self.piezas[self.selected_origen_fila-1][self.selected_origen_columna+1] is not None and self.piezas[self.selected_origen_fila-1][self.selected_origen_columna+1]['color'] == 'black':
                 temporal_moves.append((self.selected_origen_fila-1, self.selected_origen_columna+1))
-            if self.selected_origen_fila-1 >= 0 and self.selected_origen_columna - 1 >= 0 and self.piezas[self.selected_origen_fila -1][self.selected_origen_columna - 1] is not None:
+            if self.selected_origen_fila-1 >= 0 and self.selected_origen_columna - 1 >= 0 and self.piezas[self.selected_origen_fila -1][self.selected_origen_columna - 1] is not None and self.piezas[self.selected_origen_fila-1][self.selected_origen_columna-1]['color'] == 'black':
                 temporal_moves.append((self.selected_origen_fila -1, self.selected_origen_columna - 1))
 
         self.posibles_moves = temporal_moves

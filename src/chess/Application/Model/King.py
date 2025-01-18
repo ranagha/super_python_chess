@@ -5,7 +5,6 @@ class King(Pieza):
         super().__init__(color, fila, columna)
 
     def possible_moves(self):
-        print(self.fila(), self.columna())
         return [
             (min(self.fila() + 1, 7), self.columna()),
             (max(self.fila() - 1, 0), self.columna()),
