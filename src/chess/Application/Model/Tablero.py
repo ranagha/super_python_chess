@@ -177,9 +177,9 @@ class Tablero:
         return False
 
     def en_linea_diagonal(self, origen_fila, origen_columna, intermedio_fila, intermedio_columna, final_fila, final_columna):
-        if intermedio_fila == 6 and intermedio_columna == 2 and final_fila == 4 and final_columna == 0:
-            print(abs(origen_fila - intermedio_fila), abs(intermedio_fila - final_fila), abs(origen_columna - intermedio_columna), abs(intermedio_columna - final_columna))
-        return abs(origen_fila - intermedio_fila) == abs(origen_columna - intermedio_columna) and abs(intermedio_fila - final_fila)  == abs(intermedio_columna - final_columna)
+        if (origen_fila < intermedio_fila < final_fila and origen_columna < intermedio_columna < final_columna) or (origen_fila > intermedio_fila > final_fila and origen_columna > intermedio_columna > final_columna) or (origen_fila > intermedio_fila > final_fila and origen_columna < intermedio_columna < final_columna) or (origen_fila < intermedio_fila < final_fila and origen_columna > intermedio_columna > final_columna):
+            return abs(origen_fila - intermedio_fila) == abs(origen_columna - intermedio_columna) and abs(intermedio_fila - final_fila)  == abs(intermedio_columna - final_columna)
+        return False
 
     def detras_de_colision(self, fila, columna):
         detras = False
