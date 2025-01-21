@@ -45,6 +45,7 @@ class Tablero:
         self.selected_origen_fila = None
         self.selected_origen_columna = None
         self.collisions = []
+        self.turn = "white"
 
 
     def agregar_casilla(self, fila, columna, color):
@@ -92,7 +93,7 @@ class Tablero:
 
 
     def selecciona_pieza(self, event, fila, columna):
-        if self.piezas[fila][columna] is not None:
+        if self.piezas[fila][columna] is not None and self.piezas[fila][columna]['color'] == self.turn:
             self.collisions = []
             self.seleccionado = True
             self.selected_origen_fila = fila
@@ -146,6 +147,10 @@ class Tablero:
                             self.colocar_pieza(filaj, columnaj, self.piezas[filaj][columnaj]['pieza'],
                                                self.piezas[filaj][columnaj]['color'])
                     self.colocar_pieza(fila, columna, self.selected_pieza['pieza'], self.selected_pieza['color'])
+            if self.selected_pieza['color'] == 'white':
+                self.turn = 'black'
+            else:
+                self.turn = 'white'
 
 
     def casilla_vacia(self, fila, columna):
