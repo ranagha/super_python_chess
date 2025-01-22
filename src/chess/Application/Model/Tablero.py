@@ -85,7 +85,23 @@ class Tablero:
         self.casillas[fila][columna] = casilla
 
 
+    def is_in_check(self):
+        for fila in range(0, 8):
+            for columna in range(0, 8):
+                if self.piezas is not None and self.piezas[fila][columna]['color'] == self.turn and self.piezas[fila][columna]['pieza'] == 'king':
+                    king_fila = fila
+                    king_columna = columna
+        for fila in range(0, 8):
+            for columna in range(0, 8):
+                if self.piezas is not None and self.piezas[fila][columna]['color'] != self.turn:
+                    posible_moves = self.piezas[fila][columna]['pieza'].possible_moves()
+                    for filai, columnai in posible_moves:
+                        if filai == king_fila and columnai == king_columna:
+                            return True
+        return False
+
     def move(self, event, fila, columna):
+        print(self.is_in_check())
         if not self.seleccionado:
             self.selecciona_pieza(event, fila, columna)
         else:
