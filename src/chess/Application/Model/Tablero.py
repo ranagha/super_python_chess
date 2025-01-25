@@ -96,23 +96,28 @@ class Tablero:
                 if self.piezas[fila][columna] is not None and self.piezas[fila][columna]['color'] != self.turn:
                     posible_moves = self.piezas[fila][columna]['possibles_moves']
                     for filai, columnai in posible_moves:
-                        if filai == king_fila and columnai == king_columna and self.king_is_not_defended(king_fila, king_columna):
+                        if filai == king_fila and columnai == king_columna and not self.king_is_defended(fila, columna, king_fila, king_columna):
                             return True
         return False
 
-    def king_is_not_defended(self, king_fila, king_columna):
-        return True
+    def king_is_defended(self, origen_fila, origen_destino, king_fila, king_columna):
+        for i in range(0,8):
+            for j in range(0,8):
+                if self.en_linea(origen_fila, origen_destino, i, j, king_fila, king_columna) and self.piezas[i][j] is not None:
+                    return True
+        return False
 
     def move(self, event, fila, columna):
-        print(self.is_in_check())
         if not self.seleccionado:
             self.selecciona_pieza(event, fila, columna)
         else:
             self.mueve_pieza(event, fila, columna)
 
+    def you_can_move_in_check(self):
+        return True
 
     def selecciona_pieza(self, event, fila, columna):
-        if self.piezas[fila][columna] is not None and self.piezas[fila][columna]['color'] == self.turn:
+        if self.piezas[fila][columna] is not None and self.piezas[fila][columna]['color'] == self.turn and not self.is_in_check():
             self.collisions = []
             self.seleccionado = True
             self.selected_origen_fila = fila
@@ -141,6 +146,8 @@ class Tablero:
                 self.casillas[filai][columnai] = casilla
                 if self.piezas[filai][columnai] is not None:
                     self.colocar_pieza(filai, columnai, self.piezas[filai][columnai]['pieza'], self.piezas[filai][columnai]['color'])
+        if  self.is_in_check() and self.you_can_move_in_check():
+            print("moving in check")
 
     def mueve_pieza(self, event, fila, columna):
         if fila == self.selected_origen_fila and columna == self.selected_origen_columna:
