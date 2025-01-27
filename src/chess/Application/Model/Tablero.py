@@ -103,11 +103,11 @@ class Tablero:
         return False
 
     def king_is_defended(self, origen_fila, origen_columna, king_fila, king_columna):
+        self.checker_fila = origen_fila
+        self.checker_columna = origen_columna
         for i in range(0,8):
             for j in range(0,8):
                 if self.en_linea(origen_fila, origen_columna, i, j, king_fila, king_columna) and self.piezas[i][j] is not None:
-                    self.checker_fila = origen_fila
-                    self.checker_columna = origen_columna
                     return True
         return False
 
@@ -118,13 +118,16 @@ class Tablero:
             self.mueve_pieza(event, fila, columna)
 
     def you_can_move_in_check(self, fila, columna):
-        can_exit = True
+        can_move = True
         if self.piezas[fila][columna]['pieza'] == 'king':
             for filai, columnai in self.piezas[fila][columna]['possibles_moves']:
+                print(self.checker_fila, self.checker_columna)
                 for filaatack, columnaatack in self.piezas[self.checker_fila][self.checker_columna]['possible_moves']:
                    if filaatack == filai and columnaatack == columnaatack:
-                       can_exit = False
-        return can_exit
+                       can_move = False
+                if can_move:
+                    return True
+        return False
 
     def selecciona_pieza(self, event, fila, columna):
         if self.piezas[fila][columna] is not None and self.piezas[fila][columna]['color'] == self.turn and not self.is_in_check():
