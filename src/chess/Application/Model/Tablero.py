@@ -121,9 +121,8 @@ class Tablero:
         can_move = True
         if self.piezas[fila][columna]['pieza'] == 'king':
             for filai, columnai in self.piezas[fila][columna]['possibles_moves']:
-                print(self.checker_fila, self.checker_columna)
-                for filaatack, columnaatack in self.piezas[self.checker_fila][self.checker_columna]['possible_moves']:
-                   if filaatack == filai and columnaatack == columnaatack:
+                for filaatack, columnaatack in self.piezas[self.checker_fila][self.checker_columna]['possibles_moves']:
+                   if filaatack == filai and columnaatack == columnai:
                        can_move = False
                 if can_move:
                     return True
