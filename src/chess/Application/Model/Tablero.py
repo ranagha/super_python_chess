@@ -123,6 +123,7 @@ class Tablero:
             for filai, columnai in self.piezas[fila][columna]['possibles_moves']:
                 for filaatack, columnaatack in self.piezas[self.checker_fila][self.checker_columna]['possibles_moves']:
                    if filaatack == filai and columnaatack == columnai:
+                       print(filai, columnai)
                        can_move = False
                 if can_move:
                     return True
