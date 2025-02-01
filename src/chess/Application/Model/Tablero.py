@@ -119,11 +119,12 @@ class Tablero:
 
     def you_can_move_in_check(self, fila, columna):
         can_move = True
-        if self.piezas[fila][columna]['pieza'] == 'king':
-            for filai, columnai in self.piezas[fila][columna]['possibles_moves']:
+        if self.piezas[fila][columna] != None and self.piezas[fila][columna]['pieza'] == 'king':
+            self.posibles_moves = self.piezas[fila][columna]['possibles_moves']
+            self.calculate_colision()
+            for filai, columnai in self.posibles_moves:
                 for filaatack, columnaatack in self.piezas[self.checker_fila][self.checker_columna]['possibles_moves']:
                    if filaatack == filai and columnaatack == columnai:
-                       print(filai, columnai)
                        can_move = False
                 if can_move:
                     return True
